@@ -38,4 +38,9 @@ class MinimumsTest {
                 .isEmpty();
     }
 
+    @Test
+    void singletonInput_1Count_value1Minimums() {
+        assertThat(minimums(singletonList(VALUE_1), 1))
+                .containsExactly(VALUE_1);
+    }
 }
