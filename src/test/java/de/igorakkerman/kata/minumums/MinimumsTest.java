@@ -82,6 +82,7 @@ class MinimumsTest {
     @Test
     void input5Unsorted_count3_outputSorted() {
         assertThat(minimums(asList(VALUE_5, VALUE_2, VALUE_4, VALUE_3, VALUE_1), 3))
-                .containsExactly(VALUE_1, VALUE_2, VALUE_3);
+                .containsExactly(VALUE_1, VALUE_2, VALUE_3
+                );
     }
 }
