@@ -4,10 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import static de.igorakkerman.kata.minumums.Minimums.minimums;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MinimumsTest {
+
+    public static final int VALUE_1 = 42;
 
     @Test
     void emptyList_negativeCount_IllegalArgumentThrown() {
@@ -31,7 +34,7 @@ class MinimumsTest {
 
     @Test
     void singletonInput_0Count_emptyMinimums() {
-        assertThat(minimums(emptyList(), 0))
+        assertThat(minimums(singletonList(VALUE_1), 0))
                 .isEmpty();
     }
 
