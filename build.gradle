@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    jcenter()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.2.0"
+    testImplementation "org.assertj:assertj-core:3.11.1"
+}
+
+group = 'de.igorakkerman.kata.minimums'
+version = '1.0-SNAPSHOT'
