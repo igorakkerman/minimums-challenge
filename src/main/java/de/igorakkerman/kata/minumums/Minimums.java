@@ -3,6 +3,7 @@ package de.igorakkerman.kata.minumums;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
@@ -21,6 +22,9 @@ public class Minimums {
     }
 
     private static List<Integer> sort(List<Integer> input, int count) {
+        if (input.isEmpty())
+            return input;
+
         var pivot = input.get(0);
         List<Integer> low = new ArrayList<>();
         List<Integer> high = new ArrayList<>();
@@ -35,14 +39,9 @@ public class Minimums {
                         high.add(item);
                 });
 
-        List<Integer> sortedLow = low.isEmpty() ? emptyList() : sort(low, count);
-        List<Integer> sortedHigh = high.isEmpty() ? emptyList() : sort(high, count);
-//        List<Integer> sortedHigh = high;
+        List<Integer> sortedLow = sort(low, count);
+        List<Integer> sortedHigh = sortedLow.size() < count - 1 ? sort(high, count - sortedLow.size() - 1) : high;
 
-        var sorted = new ArrayList<>(sortedLow);
-        sorted.add(pivot);
-        sorted.addAll(sortedHigh);
-
-        return sorted.stream().limit(count).collect(toList());
+        return Stream.concat(Stream.concat(sortedLow.stream(), Stream.of(pivot)), sortedHigh.stream()).limit(count).collect(toList());
     }
 }
