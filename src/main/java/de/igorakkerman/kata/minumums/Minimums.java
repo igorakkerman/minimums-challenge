@@ -17,7 +17,7 @@ public class Minimums {
         if (input.isEmpty() || count <= 0) {
             return emptyList();
         } else {
-            return input;
+            return input.subList(0, count);
         }
     }
 }

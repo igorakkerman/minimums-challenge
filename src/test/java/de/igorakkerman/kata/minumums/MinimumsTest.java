@@ -15,39 +15,45 @@ class MinimumsTest {
     public static final int VALUE_2 = 4711;
 
     @Test
-    void emptyList_negativeCount_IllegalArgumentThrown() {
+    void negativeCount_IllegalArgumentThrown() {
         assertThatThrownBy(() -> minimums(emptyList(), -1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("count == -1 < 0");
     }
 
     @Test
-    void emptyList_countHigherThanInputSize_IllegalArgumentThrown() {
+    void countHigherThanInputSize_IllegalArgumentThrown() {
         assertThatThrownBy(() -> minimums(emptyList(), 1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("count == 1 > 0 == input.size()");
     }
 
     @Test
-    void emptyInput_0Count_emptyMinimums() {
+    void inputEmpty_count0_outputEmpty() {
         assertThat(minimums(emptyList(), 0))
                 .isEmpty();
     }
 
     @Test
-    void singletonInput_0Count_emptyMinimums() {
+    void input1_count0_outputEmpty() {
         assertThat(minimums(singletonList(VALUE_1), 0))
                 .isEmpty();
     }
 
     @Test
-    void singletonInput_1Count_value1Minimums() {
+    void input1_count1_outputValue1() {
         assertThat(minimums(singletonList(VALUE_1), 1))
                 .containsExactly(VALUE_1);
     }
 
     @Test
-    void singletonInput_2Count_value1Minimums() {
+    void input2_count1_outputValue1() {
+        assertThat(minimums(asList(VALUE_1, VALUE_2), 1))
+                .containsExactly(VALUE_1);
+    }
+
+    @Test
+    void input2_count2_outputValue1() {
         assertThat(minimums(asList(VALUE_1, VALUE_2), 2))
                 .containsExactly(VALUE_1, VALUE_2);
     }
