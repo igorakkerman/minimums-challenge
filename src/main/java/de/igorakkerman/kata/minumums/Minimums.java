@@ -1,48 +1,50 @@
 package de.igorakkerman.kata.minumums;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Stream.concat;
 
 public class Minimums {
-    public static List<Integer> minimums(List<Integer> input, int count) {
+    public static List<Integer> minimums(int[] items, int count) {
         if (count < 0)
             throw new IllegalArgumentException("count == " + count + " < 0");
 
-        if (count > input.size())
-            throw new IllegalArgumentException("count == " + count + " > " + input.size() + " == input.size()");
+        if (count > items.length)
+            throw new IllegalArgumentException("count == " + count + " > " + items.length + " == items.length");
 
-        return !input.isEmpty()
-                ? sort(input, count)
-                : emptyList();
+        sort(items, 0, items.length - 1, count);
+
+        return Arrays.stream(items).limit(count).boxed().collect(toList());
     }
 
-    private static List<Integer> sort(List<Integer> input, int count) {
-        if (input.isEmpty())
-            return input;
+    private static void sort(int[] items, int minIndex, int maxIndex, int count) {
+        if (count == 0 || minIndex >= maxIndex)
+            return;
 
-        var pivot = input.get(0);
-        List<Integer> low = new ArrayList<>();
-        List<Integer> high = new ArrayList<>();
+        @SuppressWarnings("UnnecessaryLocalVariable")  //
+        final int pivotIndex = maxIndex;
 
-        input
-                .stream()
-                .skip(1)
-                .forEach(item -> {
-                    if (item <= pivot)
-                        low.add(item);
-                    else
-                        high.add(item);
-                });
+        int firstHighIndex = minIndex - 1;
+        for (int lowIndex = minIndex; lowIndex < maxIndex; lowIndex++)
+            if (items[lowIndex] <= items[pivotIndex])
+                swap(items, ++firstHighIndex, lowIndex);
 
-        List<Integer> sortedLow = sort(low, count);
-        List<Integer> sortedHigh = sortedLow.size() < count - 1 ? sort(high, count - sortedLow.size() - 1) : high;
+        final int newPivotIndex = ++firstHighIndex;
+        swap(items, pivotIndex, newPivotIndex);
 
-        return Stream.of(sortedLow.stream(), Stream.of(pivot), sortedHigh.stream()).flatMap(Function.identity()).limit(count).collect(toList());
+        sort(items, minIndex, newPivotIndex - 1, count);
+        sort(items, newPivotIndex + 1, maxIndex, count);
+
+//        List<Integer> sortedLow = sort(low, count);
+//        List<Integer> sortedHigh = sortedLow.size() < count - 1 ? sort(high, count - sortedLow.size() - 1) : high;
+
+//        return Stream.of(sortedLow.stream(), Stream.of(pivot), sortedHigh.stream()).flatMap(Function.identity()).limit(count).collect(toList());
+    }
+
+    private static void swap(int[] items, int index1, int index2) {
+        int temp = items[index1];
+        items[index1] = items[index2];
+        items[index2] = temp;
     }
 }
