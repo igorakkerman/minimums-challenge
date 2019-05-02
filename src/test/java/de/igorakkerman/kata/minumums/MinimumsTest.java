@@ -15,6 +15,7 @@ class MinimumsTest {
     private static final int VALUE_2 = 666;
     private static final int VALUE_3 = 4711;
     private static final int VALUE_4 = 420815;
+    private static final int VALUE_5 = 999999999;
 
     @Test
     void negativeCount_IllegalArgumentThrown() {
@@ -79,8 +80,8 @@ class MinimumsTest {
     }
 
     @Test
-    void input4Unsorted_count3_outputSorted() {
-        assertThat(minimums(asList(VALUE_2, VALUE_4, VALUE_3, VALUE_1), 2))
-                .containsExactly(VALUE_1, VALUE_2);
+    void input5Unsorted_count3_outputSorted() {
+        assertThat(minimums(asList(VALUE_5, VALUE_2, VALUE_4, VALUE_3, VALUE_1), 3))
+                .containsExactly(VALUE_1, VALUE_2, VALUE_3);
     }
 }
