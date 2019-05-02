@@ -53,7 +53,13 @@ class MinimumsTest {
     }
 
     @Test
-    void input2_count2_outputValue1() {
+    void input2Unsorted_count1_outputValue2() {
+        assertThat(minimums(asList(VALUE_2, VALUE_1), 1))
+                .containsExactly(VALUE_1);
+    }
+
+    @Test
+    void input2Sorted_count2_outputValue1() {
         assertThat(minimums(asList(VALUE_1, VALUE_2), 2))
                 .containsExactly(VALUE_1, VALUE_2);
     }

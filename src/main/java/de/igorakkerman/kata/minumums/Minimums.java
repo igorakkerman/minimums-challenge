@@ -1,9 +1,9 @@
 package de.igorakkerman.kata.minumums;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
 public class Minimums {
@@ -14,10 +14,14 @@ public class Minimums {
         if (count > input.size())
             throw new IllegalArgumentException("count == " + count + " > " + input.size() + " == input.size()");
 
-        if (input.isEmpty() || count <= 0) {
-            return emptyList();
-        } else {
-            return input.subList(0, count);
-        }
+        return !input.isEmpty()
+                ? sort(input, count)
+                : emptyList();
+    }
+
+    private static List<Integer> sort(List<Integer> input, int count) {
+        var sorted = new ArrayList<>(input);
+        sorted.sort(Comparator.comparingInt(i -> i));
+        return sorted.subList(0, count);
     }
 }
