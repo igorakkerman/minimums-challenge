@@ -14,6 +14,10 @@ public class Minimums {
         if (count > input.size())
             throw new IllegalArgumentException("count == " + count + " > " + input.size() + " == input.size()");
 
-        return !input.isEmpty() && count > 0 ? asList(input.get(0)) : emptyList();
+        if (input.isEmpty() || count <= 0) {
+            return emptyList();
+        } else {
+            return input;
+        }
     }
 }
