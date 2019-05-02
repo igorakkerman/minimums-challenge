@@ -13,12 +13,12 @@ public class Minimums {
         if (count > items.length)
             throw new IllegalArgumentException("count == " + count + " > " + items.length + " == items.length");
 
-        sort(items, 0, items.length - 1, count);
+        sortUpToCount(items, 0, items.length - 1, count);
 
         return Arrays.stream(items).limit(count).boxed().collect(toList());
     }
 
-    private static void sort(int[] items, int minIndex, int maxIndex, int count) {
+    private static void sortUpToCount(int[] items, int minIndex, int maxIndex, int count) {
         if (count == 0 || minIndex >= maxIndex)
             return;
 
@@ -33,13 +33,10 @@ public class Minimums {
         final int newPivotIndex = ++firstHighIndex;
         swap(items, pivotIndex, newPivotIndex);
 
-        sort(items, minIndex, newPivotIndex - 1, count);
-        sort(items, newPivotIndex + 1, maxIndex, count);
-
-//        List<Integer> sortedLow = sort(low, count);
-//        List<Integer> sortedHigh = sortedLow.size() < count - 1 ? sort(high, count - sortedLow.size() - 1) : high;
-
-//        return Stream.of(sortedLow.stream(), Stream.of(pivot), sortedHigh.stream()).flatMap(Function.identity()).limit(count).collect(toList());
+        sortUpToCount(items, minIndex, newPivotIndex - 1, count);
+        final int missingCount = count - 1 - (newPivotIndex - minIndex);
+        if (missingCount > 0)
+            sortUpToCount(items, newPivotIndex + 1, maxIndex, missingCount);
     }
 
     private static void swap(int[] items, int index1, int index2) {
