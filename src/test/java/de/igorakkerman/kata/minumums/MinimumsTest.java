@@ -12,7 +12,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class MinimumsTest {
 
     public static final int VALUE_1 = 42;
-    public static final int VALUE_2 = 4711;
+    public static final int VALUE_2 = 666;
+    private static final int VALUE_3 = 4711;
 
     @Test
     void negativeCount_IllegalArgumentThrown() {
@@ -59,8 +60,14 @@ class MinimumsTest {
     }
 
     @Test
-    void input2Sorted_count2_outputValue1() {
+    void input2Sorted_count2_outputSorted() {
         assertThat(minimums(asList(VALUE_1, VALUE_2), 2))
+                .containsExactly(VALUE_1, VALUE_2);
+    }
+
+    @Test
+    void input2Unsorted_count2_outputSorted() {
+        assertThat(minimums(asList(VALUE_2, VALUE_1), 2))
                 .containsExactly(VALUE_1, VALUE_2);
     }
 }
