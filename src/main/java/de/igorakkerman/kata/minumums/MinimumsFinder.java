@@ -41,8 +41,10 @@ public class MinimumsFinder {
         final int newPivotIndex =
                 partition(items, minIndex, maxIndex);
 
-        sortLower(items, minIndex, count, newPivotIndex);
-        sortHigher(items, minIndex, maxIndex, count, newPivotIndex);
+        final int missingCount = count - 1 - (newPivotIndex - minIndex);
+
+        sortUpToCount(items, minIndex, newPivotIndex - 1, count);
+        sortUpToCount(items, newPivotIndex + 1, maxIndex, missingCount);
     }
 
     private int partition(int[] items, int minIndex, int pivotIndex) {
@@ -56,22 +58,12 @@ public class MinimumsFinder {
         return newPivotIndex;
     }
 
-    private void sortLower(int[] items, int minIndex, int count, int newPivotIndex) {
-        sortUpToCount(items, minIndex, newPivotIndex - 1, count);
-    }
-
-    private void sortHigher(int[] items, int minIndex, int maxIndex, int count, int newPivotIndex) {
-        final int missingCount = count - 1 - (newPivotIndex - minIndex);
-        if (missingCount > 0)
-            sortUpToCount(items, newPivotIndex + 1, maxIndex, missingCount);
-    }
-
     private void swap(int[] items, int index1, int index2) {
         int temp = items[index1];
         items[index1] = items[index2];
         items[index2] = temp;
 
-        swapCount ++;
+        swapCount++;
     }
 
     public List<Integer> getMinimums() {

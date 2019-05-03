@@ -2,20 +2,15 @@ package de.igorakkerman.kata.minumums;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static de.igorakkerman.kata.minumums.MinimumsFinder.minimums;
-import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.rangeClosed;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MinimumsFinderTest {
-
-    private static final int VALUE_1 = 42;
-    private static final int VALUE_2 = 666;
-    private static final int VALUE_3 = 4711;
-    private static final int VALUE_4 = 10000;
-    private static final int VALUE_5 = 999999999;
 
     @Test
     void negativeCount_IllegalArgumentThrown() {
@@ -39,60 +34,95 @@ class MinimumsFinderTest {
 
     @Test
     void input1_count0() {
-        assertThat(minimums(new int[]{VALUE_1}, 0))
+        assertThat(minimums(new int[]{1}, 0))
                 .isEmpty();
     }
 
     @Test
     void input1_count1() {
-        assertThat(minimums(new int[]{VALUE_1}, 1))
-                .containsExactly(VALUE_1);
+        assertThat(minimums(new int[]{1}, 1))
+                .containsExactly(1);
     }
 
     @Test
     void input2Sorted_count1() {
-        assertThat(minimums(new int[]{VALUE_1, VALUE_2}, 1))
-                .containsExactly(VALUE_1);
+        assertThat(minimums(new int[]{1, 2}, 1))
+                .containsExactly(1);
     }
 
     @Test
     void input2Unsorted_count1() {
-        assertThat(minimums(new int[]{VALUE_2, VALUE_1}, 1))
-                .containsExactly(VALUE_1);
+        assertThat(minimums(new int[]{2, 1}, 1))
+                .containsExactly(1);
     }
 
     @Test
     void input2Sorted_count2() {
-        assertThat(minimums(new int[]{VALUE_1, VALUE_2}, 2))
-                .containsExactly(VALUE_1, VALUE_2);
+        assertThat(minimums(new int[]{1, 2}, 2))
+                .containsExactly(1, 2);
     }
 
     @Test
     void input2Unsorted_count2() {
-        assertThat(minimums(new int[]{VALUE_2, VALUE_1}, 2))
-                .containsExactly(VALUE_1, VALUE_2);
+        assertThat(minimums(new int[]{2, 1}, 2))
+                .containsExactly(1, 2);
     }
 
     @Test
     void input3Unsorted_count2() {
-        assertThat(minimums(new int[]{VALUE_2, VALUE_3, VALUE_1}, 2))
-                .containsExactly(VALUE_1, VALUE_2);
+        assertThat(minimums(new int[]{2, 3, 1}, 2))
+                .containsExactly(1, 2);
     }
 
     @Test
     void input5Unsorted_count3() {
-        assertThat(minimums(new int[]{VALUE_5, VALUE_2, VALUE_4, VALUE_3, VALUE_1}, 3))
-                .containsExactly(VALUE_1, VALUE_2, VALUE_3
-                );
+        assertThat(minimums(new int[]{5, 2, 4, 3, 1}, 3))
+                .containsExactly(1, 2, 3);
     }
 
     @Test
-    void inputAllIntsReverted_count100() {
-        int[] input = rangeClosed(1, VALUE_4).boxed().sorted(reverseOrder()).mapToInt(i -> i).toArray();
+    void input10_000IntsReverted_count100() {
+        int[] input = firstIntsReverted(10_000);
+
         final MinimumsFinder minimumsFinder =
                 new MinimumsFinder(input, 100)
                         .findMinimums();
+
         assertThat(minimumsFinder.getMinimums())
-                .containsExactlyElementsOf(rangeClosed(1, 100).boxed().collect(toList()));
+                .containsExactlyElementsOf(firstInts(100));
+        assertThat(minimumsFinder.getSwapCount())
+                .isEqualTo(980_299);
+
+        // unoptimized: 25_004_999 swaps
+    }
+
+    @Test
+    void input10_000_000IntsReverted_count100() {
+        int[] input = firstIntsReverted(10_000_000);
+
+        final MinimumsFinder minimumsFinder =
+                new MinimumsFinder(input, 100)
+                        .findMinimums();
+
+        assertThat(minimumsFinder.getMinimums())
+                .containsExactlyElementsOf(firstInts(100));
+        assertThat(minimumsFinder.getSwapCount())
+                .isEqualTo(989_990_299);
+    }
+
+    // optimized: 3.5 seconds
+    // unoptimized: StackOverflow after 4.5 minutes
+
+    private List<Integer> firstInts(int count) {
+        return rangeClosed(1, count).boxed().collect(toList());
+    }
+
+    private int[] firstIntsReverted(int count) {
+        int[] items = new int[count];
+
+        for (int i = 0; i < count; i++)
+            items[i] = count - i;
+
+        return items;
     }
 }
