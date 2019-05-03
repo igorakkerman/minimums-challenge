@@ -2,14 +2,14 @@ package de.igorakkerman.kata.minumums;
 
 import org.junit.jupiter.api.Test;
 
-import static de.igorakkerman.kata.minumums.Minimums.minimums;
+import static de.igorakkerman.kata.minumums.MinimumsFinder.minimums;
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.rangeClosed;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class MinimumsTest {
+class MinimumsFinderTest {
 
     private static final int VALUE_1 = 42;
     private static final int VALUE_2 = 666;
@@ -81,15 +81,18 @@ class MinimumsTest {
 
     @Test
     void input5Unsorted_count3() {
-        assertThat(minimums(new int[] {VALUE_5, VALUE_2, VALUE_4, VALUE_3, VALUE_1}, 3))
+        assertThat(minimums(new int[]{VALUE_5, VALUE_2, VALUE_4, VALUE_3, VALUE_1}, 3))
                 .containsExactly(VALUE_1, VALUE_2, VALUE_3
                 );
     }
 
     @Test
     void inputAllIntsReverted_count100() {
-        int[] input = rangeClosed(1, VALUE_4).boxed().sorted(reverseOrder()).mapToInt(i->i).toArray();
-        assertThat(minimums(input, 100))
+        int[] input = rangeClosed(1, VALUE_4).boxed().sorted(reverseOrder()).mapToInt(i -> i).toArray();
+        final MinimumsFinder minimumsFinder =
+                new MinimumsFinder(input, 100)
+                        .findMinimums();
+        assertThat(minimumsFinder.getMinimums())
                 .containsExactlyElementsOf(rangeClosed(1, 100).boxed().collect(toList()));
     }
 }
