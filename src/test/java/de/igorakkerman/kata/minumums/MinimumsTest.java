@@ -32,62 +32,62 @@ class MinimumsTest {
     }
 
     @Test
-    void inputEmpty_count0_outputEmpty() {
+    void inputEmpty_count0() {
         assertThat(minimums(new int[0], 0))
                 .isEmpty();
     }
 
     @Test
-    void input1_count0_outputEmpty() {
+    void input1_count0() {
         assertThat(minimums(new int[]{VALUE_1}, 0))
                 .isEmpty();
     }
 
     @Test
-    void input1_count1_outputValue1() {
+    void input1_count1() {
         assertThat(minimums(new int[]{VALUE_1}, 1))
                 .containsExactly(VALUE_1);
     }
 
     @Test
-    void input2_count1_outputValue1() {
+    void input2Sorted_count1() {
         assertThat(minimums(new int[]{VALUE_1, VALUE_2}, 1))
                 .containsExactly(VALUE_1);
     }
 
     @Test
-    void input2Unsorted_count1_outputValue2() {
+    void input2Unsorted_count1() {
         assertThat(minimums(new int[]{VALUE_2, VALUE_1}, 1))
                 .containsExactly(VALUE_1);
     }
 
     @Test
-    void input2Sorted_count2_outputSorted() {
+    void input2Sorted_count2() {
         assertThat(minimums(new int[]{VALUE_1, VALUE_2}, 2))
                 .containsExactly(VALUE_1, VALUE_2);
     }
 
     @Test
-    void input2Unsorted_count2_outputSorted() {
+    void input2Unsorted_count2() {
         assertThat(minimums(new int[]{VALUE_2, VALUE_1}, 2))
                 .containsExactly(VALUE_1, VALUE_2);
     }
 
     @Test
-    void input3Unsorted_count2_outputSorted() {
+    void input3Unsorted_count2() {
         assertThat(minimums(new int[]{VALUE_2, VALUE_3, VALUE_1}, 2))
                 .containsExactly(VALUE_1, VALUE_2);
     }
 
     @Test
-    void input5Unsorted_count3_outputSorted() {
+    void input5Unsorted_count3() {
         assertThat(minimums(new int[] {VALUE_5, VALUE_2, VALUE_4, VALUE_3, VALUE_1}, 3))
                 .containsExactly(VALUE_1, VALUE_2, VALUE_3
                 );
     }
 
     @Test
-    void inputAllIntsReverted_count100_outputSorted() {
+    void inputAllIntsReverted_count100() {
         int[] input = rangeClosed(1, VALUE_4).boxed().sorted(reverseOrder()).mapToInt(i->i).toArray();
         assertThat(minimums(input, 100))
                 .containsExactlyElementsOf(rangeClosed(1, 100).boxed().collect(toList()));
