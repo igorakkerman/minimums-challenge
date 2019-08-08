@@ -16,5 +16,5 @@ dependencies {
     testImplementation "org.assertj:assertj-core:3.11.1"
 }
 
-group = 'de.igorakkerman.kata.minimums'
+group = 'de.igorakkerman.challenge.minimums'
 version = '1.0-SNAPSHOT'
